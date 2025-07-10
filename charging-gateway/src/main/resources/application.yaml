@@ -1,0 +1,41 @@
+server:
+  port: 5050
+#spring应用名称
+spring:
+  application:
+    name: gateway
+  #网关配置
+  cloud:
+    gateway:
+      globalcors:
+        #前端会有CORS跨域问题 可以配置跨域
+        cors-configurations:
+          '[/**]':
+            allowed-origin-patterns: "*"
+            allowed-methods: "*"
+            allowed-headers: "*"
+            allow-credentials: true
+            max-age: 3600
+      #路由配置 有几个服务 至少配置几个路由 前端访问的只有其中3个服务
+      routes:
+        - id: device_route
+          uri: lb://charging-device
+          #小程序前端访问网关 携带一个路径path前缀 device_api order_api user_api
+          #进入网关路径 /device_api/device/station/near 从网关出去调用/device/station/near
+          predicates:
+            - Path=/device_api/**
+          filters:
+            #将进入网关的path路径中 前缀 摘除,/a/b/c 摘除1级前缀 编程/b/c 摘除2级 /c
+            - StripPrefix=1
+        - id: order_route
+          uri: lb://charging-order
+          predicates:
+            - Path=/order_api/**
+          filters:
+            - StripPrefix=1
+        - id: user_route
+          uri: lb://charging-user
+          predicates:
+            - Path=/user_api/**
+          filters:
+            - StripPrefix=1
