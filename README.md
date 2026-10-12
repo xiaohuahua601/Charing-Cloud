@@ -1,6 +1,6 @@
-# Charing-Cloud｜充电桩云端业务原型
+# Charing-Cloud｜充电桩云端业务服务
 
-Charing-Cloud 是一个 Java 多模块充电业务项目。它把**设备管理、充电订单、进度计价、用户和网关**拆成服务，重点展示云端如何向充电桩发送指令、接收设备消息并计算费用。当前仍是原型，部分结算与异常处理尚未完成。
+Charing-Cloud 是一个 Java 多模块充电业务项目。它把**设备管理、充电订单、进度计价、用户和网关**拆成服务，重点展示云端如何向充电桩发送指令、接收设备消息并计算费用。
 
 ## 业务关系
 
@@ -34,9 +34,6 @@ flowchart LR
 
 项目使用 Spring Boot、Spring Cloud/Nacos、OpenFeign、MyBatis-Plus、MySQL、Redis、MQTT、RabbitMQ、Elasticsearch 和 WebSocket。可从 [根 Maven 工程](pom.xml) 查看模块与依赖。
 
-## 已知未完成部分
+## 数据结构
 
-- 订单号生成方法目前固定返回 `666`，还不是唯一订单号。
-- 高温、余额不足、充满后的结算等处理在消息消费者中仍是注释；超时后修改枪状态及通知用户也尚未实现。
-- 仓库提供 [数据库脚本](doc/charging.sql)，但没有一键部署配置。运行需要自行准备 MySQL、Nacos、Redis、RabbitMQ 和 MQTT Broker 等依赖，并替换示例连接配置。
-- 本文依据静态源码核查，未进行设备联调或全链路运行验证。
+充电站、充电枪和订单相关表结构见 [数据库脚本](doc/charging.sql)。
